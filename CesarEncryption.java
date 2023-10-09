@@ -3,55 +3,54 @@ package sb;
 import java.util.Scanner;
 
 public class CesarEncryption {
-    // alphabet
-    // (32) !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz (122)
-    public CesarEncryption() {
-
-    }
-
     public static void main(String[] args) {
-        String input = CesarEncryption.inputFromUser();
-        System.out.println(input);
-        String encrypted = CesarEncryption.encrypt(input);
-        System.out.println(encrypted);
-        String decrypted = CesarEncryption.decrypt(encrypted);
-        System.out.println(decrypted);
+        Scanner scanner = new Scanner(System.in);
+
+        String input = CesarEncryption.inputFromUser(scanner);
+        System.out.println("Original Text: " + input);
+
+        int shift = CesarEncryption.getShiftFromUser(scanner);
+        String encrypted = CesarEncryption.encrypt(input, shift);
+        System.out.println("Encrypted Text: " + encrypted);
+
+        String decrypted = CesarEncryption.decrypt(encrypted, shift);
+        System.out.println("Decrypted Text: " + decrypted);
+
+        scanner.close();
     }
 
-    public static String inputFromUser() {
-        Scanner sc = new Scanner(System.in);
+    public static String inputFromUser(Scanner scanner) {
         System.out.println("Enter your text to encrypt: ");
-        String result = sc.nextLine();
-        sc.close();
-        return result;
+        return scanner.nextLine();
     }
 
-    public static String encrypt(String message) {
+    public static int getShiftFromUser(Scanner scanner) {
+        System.out.println("Enter the shift value (an integer): ");
+        return scanner.nextInt();
+    }
+
+    public static String encrypt(String message, int shift) {
         StringBuilder sb = new StringBuilder(message);
-        int distance = 5;
         for (int i = 0; i < sb.length(); i++) {
-            int c = (int) sb.charAt(i);
-            if (c + distance > 122) {
-                c = 31 + (distance - (122 - c));
-            } else {
-                c += distance;
+            char c = sb.charAt(i);
+            if (Character.isLetter(c)) {
+                char base = Character.isUpperCase(c) ? 'A' : 'a';
+                c = (char) (((c - base + shift) % 26) + base);
+                sb.setCharAt(i, c);
             }
-            sb.setCharAt(i, (char) c);
         }
         return sb.toString();
     }
 
-    public static String decrypt(String message) {
+    public static String decrypt(String message, int shift) {
         StringBuilder sb = new StringBuilder(message);
-        int distance = 5;
         for (int i = 0; i < sb.length(); i++) {
-            int c = (int) sb.charAt(i);
-            if (c - distance < 32) {
-                c = 123 - (distance - (c - 32));
-            } else {
-                c -= distance;
+            char c = sb.charAt(i);
+            if (Character.isLetter(c)) {
+                char base = Character.isUpperCase(c) ? 'A' : 'a';
+                c = (char) (((c - base - shift + 26) % 26) + base);
+                sb.setCharAt(i, c);
             }
-            sb.setCharAt(i, (char) c);
         }
         return sb.toString();
     }
