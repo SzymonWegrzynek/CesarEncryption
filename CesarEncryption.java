@@ -7,7 +7,6 @@ public class CesarEncryption {
         Scanner scanner = new Scanner(System.in);
 
         String input = CesarEncryption.inputFromUser(scanner);
-        System.out.println("Original Text: " + input);
 
         int shift = CesarEncryption.getShiftFromUser(scanner);
         String encrypted = CesarEncryption.encrypt(input, shift);
