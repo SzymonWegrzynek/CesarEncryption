@@ -1,5 +1,3 @@
-package sb;
-
 import java.util.Scanner;
 
 public class CesarEncryptionAttack {
@@ -68,7 +66,7 @@ public class CesarEncryptionAttack {
         }
 
         for (int i = 0; i < 26; i++) {
-            int difference = Math.abs(actualFrequency[i] - (int) (text.length() * (expectedFrequency[i] / 100.0)));
+            double difference = Math.abs((expectedFrequency[i] / text.length() * 100) - actualFrequency[i]);
             totalDifference += difference;
         }
 
